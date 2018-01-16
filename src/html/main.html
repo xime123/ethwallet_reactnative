@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+<script type="text/javascript" src="../web3jlib/wrap/walletHelper.js"></script>
+<script type="text/javascript" src="../web3jlib/keythereum.min.js" ></script>
+<head>
+<script type="text/javascript">
+	//给RN层发送数据
+    function sendData(data) {
+  		if (window.originalPostMessage) {
+   		 window.postMessage(data);
+ 	 	} else {
+   		 	throw Error('postMessage接口还未注入');
+  		}
+	}
+
+	window.onload = function() {
+		
+		document.addEventListener('message', function(msg) {
+			let jsonStr=msg.data;
+		
+			var obj=JSON.parse(jsonStr);
+			console.log('addEventListener:msg');
+			switch (obj.type){
+
+				//查询余额
+				case 'getBalance':
+			
+				break;
+
+				//创建钱包文件
+				case 'createWallet':
+				let walletJson=WalletHelper.generateWallet(obj.password);
+	
+				var KeyObj={type:'walletJson',value:walletJson};
+				
+				sendData(JSON.stringify(KeyObj));
+				break;
+
+				//加载钱包文件
+				case 'loadWallet':
+				
+				let generateKey=WalletHelper.loadWalletFile(walletJson,password);
+				var KeyObj={type:'generateKey',value:generateKey};
+
+				sendData(JSON.stringify(KeyObj));
+				break;
+			}
+			
+		});
+	}
+</script>
+    <body></body>
+</head>
+
+</html>
