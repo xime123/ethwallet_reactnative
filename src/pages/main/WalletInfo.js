@@ -26,6 +26,9 @@ export default class WalletInfo extends Component{
                 <Text     numberOfLines={10} style={MVC.textAddress}>
                     {this.props.address}
                 </Text>
+                <Text     numberOfLines={10} style={MVC.textAddress}>
+                    {this.props.privateKey}
+                </Text>
                 <Text  numberOfLines={10} style={MVC.textAddress}
                     onPress={this.props.getBalnce}
                 >

@@ -10,12 +10,13 @@ import {
 } from 'react-native';
 import MVC from '../../MVC';
 import Button from '../../components/Button';
+import TextUtil from '../../util/TextUtil';
 export default class CreateWallet extends Component{
      
     static navigationOptions=({navigation})=>({
  
         title:'创建钱包',
-      
+       
     });
     constructor(props){
         super(props);
@@ -26,6 +27,16 @@ export default class CreateWallet extends Component{
     }
 
     startCreate(){
+
+        if(TextUtil.isEmpty(this.state.walletName)){
+            Alert.alert('钱包名不能为空');
+            return;
+        }
+        if(TextUtil.isEmpty(this.state.password)){
+            Alert.alert('密码不能为空');
+            return;
+        }
+
         const {navigate,goBack,state} = this.props.navigation;
         // 在第二个页面,在goBack之前,将上个页面的方法取到,并回传参数,这样回传的参数会重走render方法
         state.params.callback(this.state.walletName,this.state.password);

@@ -6,7 +6,6 @@ import {
   View
 } from 'react-native';
 
-import BarcodeScanner from 'react-native-barcode-scanner-universal'
 
 export default class QrcodeScan extends Component {
     static navigationOptions=({navigation})=>({
@@ -47,12 +46,12 @@ export default class QrcodeScan extends Component {
     )
 
     return (
-      <BarcodeScanner
+      <Text
         onBarCodeRead={  this.parseData.bind(this)  }
         style={styles.camera}
       >
         {scanArea}
-      </BarcodeScanner>
+      </Text>
     );
   }
 }

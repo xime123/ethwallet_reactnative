@@ -94,15 +94,30 @@ def enableSeparateBuildPerCPUArchitecture = false
 def enableProguardInReleaseBuilds = false
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    dexOptions {
+        javaMaxHeapSize "6g"
+    }
 
+
+
+    signingConfigs {
+        release {
+            keyAlias 'juwallet'
+            keyPassword 'jzix1234'
+            storeFile file('./files/keystore.jks')
+            storePassword 'jzix1234'
+        }
+    }
+
+    compileSdkVersion 26
     defaultConfig {
         applicationId "com.test"
         minSdkVersion 16
-        targetSdkVersion 22
+        targetSdkVersion 26
+        buildToolsVersion "26.0.2"
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -116,7 +131,14 @@ android {
         }
     }
     buildTypes {
+
+        debug {
+           // applicationIdSuffix ".dev"
+           // signingConfig signingConfigs.release
+        }
         release {
+            debuggable false
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
@@ -134,17 +156,23 @@ android {
             }
         }
     }
+
+
 }
 
 dependencies {
-    compile project(':react-native-barcodescanner')
-    compile project(':react-native-camera')
+
     compile fileTree(dir: "libs", include: ["*.jar"])
-    compile "com.android.support:appcompat-v7:23.0.1"
+    compile "com.android.support:appcompat-v7:26.1.0"
     compile "com.facebook.react:react-native:+"  // From node_modules
     compile 'com.google.zxing:core:3.3.0'
     compile 'cn.bingoogolapple:bga-qrcodecore:1.1.7'
     compile 'cn.bingoogolapple:bga-zxing:1.1.7@aar'
+    compile 'org.web3j:core:3.1.1-android'
+//    compile 'org.web3j:core:3.1.1-android'
+    compile 'com.google.code.gson:gson:2.6.2'
+    compile 'com.android.support:multidex:1.0.1'
+    compile 'com.yanzhenjie:permission:1.0.8'
 }
 
 // Run this once to be able to run the application with BUCK

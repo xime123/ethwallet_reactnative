@@ -12,6 +12,10 @@ import {
   Text,
   View
 } from 'react-native';
+import { 
+  DrawerNavigator ,
+  DrawerItems ,
+  } from 'react-navigation';
 
 import MainContrainer from './containers/MainContrainer';
 import Mine from './containers/Mine';
@@ -19,6 +23,10 @@ import Categary from './containers/Categary';
 import CreateWallet from './pages/main/CreateWallet';
 import QrcodeScan from './pages/main/QrcodeScan';
 import QrCode from './pages/main/QrCode';
+import ImportWallet from './pages/mine/ImportWallet';
+import WalletList from './pages/mine/WalletList';
+import MineInfo from './pages/mine/MineInfo';
+import Transaction from './pages/main/Transaction';
 const TabContainer=TabNavigator(
   {
     Main:{screen:MainContrainer},
@@ -66,6 +74,18 @@ const App = StackNavigator(
     },
     Qrcode:{
       screen: QrCode,
+    },
+    ImportWallet:{
+      screen: ImportWallet,
+    },
+    WalletList:{
+      screen: WalletList,
+    },
+    MineInfo:{
+      screen: MineInfo,
+    },
+    Transaction:{
+      screen: Transaction
     }
   },
   {
@@ -82,6 +102,9 @@ const App = StackNavigator(
     }
   }
 );
+
+
+
 export default App;
 
 

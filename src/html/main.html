@@ -3,8 +3,20 @@
 
 
 
-<script type="text/javascript" src="../web3jlib/wrap/walletHelper.js"></script>
-<script type="text/javascript" src="../web3jlib/keythereum.min.js" ></script>
+	<script type="text/javascript" src="../web3jlib/ABI.js"></script>
+	<script type="text/javascript" src="../web3jlib/ethereumjs-all.js"></script>
+	<script type="text/javascript" src="../web3jlib/wzrdin.js"></script>
+	<script type="text/javascript" src="../web3jlib/keythereum.min.js"></script>
+	<script type="text/javascript" src="../web3jlib/lightwallet.min.js"></script>
+	<script type="text/javascript" src="../web3jlib/web3js0.16.0.js"></script>
+	<script type="text/javascript" src="../web3jlib/ethers-wallet.min.js"></script>
+	
+	<script type="text/javascript" src="../web3jlib/wrap/transactionSender.js"></script>
+	<script type="text/javascript" src="../web3jlib/wrap/contractManager.js"></script>
+	<script type="text/javascript" src="../web3jlib/wrap/nativeCaller.js"></script>
+	<script type="text/javascript" src="../web3jlib/wrap/WebThreeRLP.js"></script>
+
+	<script type="text/javascript" src="../web3jlib/wrap/walletHelper.js"></script>
 <head>
 <script type="text/javascript">
 	//给RN层发送数据
@@ -20,32 +32,91 @@
 		
 		document.addEventListener('message', function(msg) {
 			let jsonStr=msg.data;
-		
+			let url="https://api.etherscan.io/api?module=account&action=txlist&address=0xddbd2b932c763ba5b1b7ae3b362eac3e8d40121a&startblock=0&endblock=99999999&page=1&offset=10&sort=asc&apikey=YourApiKeyToken";
 			var obj=JSON.parse(jsonStr);
 			console.log('addEventListener:msg');
 			switch (obj.type){
 
 				//查询余额
 				case 'getBalance':
+				// alert('getBalance');
+				// fetch(url).then((result,error)=>{
+				// 	if(!error){
+					
+				// 		alert(result.status);
+				// 	}else{
+				// 		alert("error:");
+				// 	}
+				// });
+				//window.web3 = web3;
+				
+				var web3 = new Web3(new Web3.providers.HttpProvider(obj.provider));
+				var version = web3.version.api;
+				alert('version='+version);
+				alert('web3='+web3.currentProvider.host);
+				alert('address='+obj.address);
+				alert('provider='+obj.provider);
+				console.log('wv address='+obj.address );
+				console.log('wv provider='+obj.provider);
 			
+			
+				web3.eth.getBalance(obj.address,(error,result)=>{
+					alert(result+''+error)
+					if(!error){
+						alert('balance='+result);
+					}else{
+						alert('error='+error.toString());
+						var KeyObj={type:'balance',value:error.toString()};
+				
+						sendData(JSON.stringify(KeyObj));
+						console.log('wv error='+error);
+					}	
+				});
 				break;
 
 				//创建钱包文件
 				case 'createWallet':
+				console.log('main::createWallet');
+				alert('createWallet');
 				let walletJson=WalletHelper.generateWallet(obj.password);
 	
-				var KeyObj={type:'walletJson',value:walletJson};
+				var KeyObj={type:'walletJson',value:walletJson,walletName:obj.walletName};
 				
 				sendData(JSON.stringify(KeyObj));
 				break;
 
 				//加载钱包文件
 				case 'loadWallet':
-				
-				let generateKey=WalletHelper.loadWalletFile(walletJson,password);
+			
+		
+				let generateKey=WalletHelper.loadWalletFile(obj.walletJson,obj.password);
+				console.log('main::generateKey');
+			
 				var KeyObj={type:'generateKey',value:generateKey};
 
 				sendData(JSON.stringify(KeyObj));
+				break;
+
+				//发起交易
+				case 'sendTransaction':
+				alert(obj.provider);
+				TransactionSender.setProvider(obj.provider);
+
+				let hash=TransactionSender.sendEthRawTransaction(obj.nonce,obj.to,obj.value,obj.privateKey);
+				var KeyObj={type:'sendTransaction',value:hash};
+				sendData(JSON.stringify(KeyObj));
+				// TransactionSender.sendEthRawTransaction(obj.nonce,obj.to,obj.value,obj.privateKey,(error,result)=>{
+				// 	if(error){
+				// 		var KeyObj={type:'sendTransaction',value:error};
+				// 		sendData(JSON.stringify(KeyObj));
+				// 	}else{
+				// 		var KeyObj={type:'sendTransaction',value:result};
+				// 		sendData(JSON.stringify(KeyObj));
+						
+				// 	}
+					
+				//  });
+			
 				break;
 			}
 			

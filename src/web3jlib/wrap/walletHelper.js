@@ -24,7 +24,7 @@
         _isActivate: false,
         _web3: {},
     };
-    WalletHelper.loadWalletFile = function(walletJson, password, UUID) {
+    WalletHelper.loadWalletFile = function(walletJson, password) {
 
         //ObjCLog("🤔" + "walletJson:" + walletJson + " password: " + password);
 

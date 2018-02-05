@@ -19,7 +19,7 @@ let MCV = StyleSheet.create({
     },
     longButton: {                  //定义一个比较长的Text做按钮
         height: textSize *2,
-        margin:40,
+        margin:10,
         backgroundColor: '#3e9ce9',
         color:'white',
         alignItems:'center',
@@ -110,7 +110,14 @@ let MCV = StyleSheet.create({
     },
     textAddress: { 
         marginTop:20,
-        height:textSize *1.4 ,   
+        height:textSize *1.1 ,   
+        color:'#ffffff',
+        fontSize: 14,
+    
+    },
+    txtextAddress: { 
+        marginTop:20,
+        height:textSize *2 ,   
         color:'#ffffff',
         fontSize: 14,
     

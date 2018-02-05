@@ -1,0 +1,1 @@
+export const ETH_TRANSATCION_LIST = 'https://api.etherscan.io/api?module=account&action=txlist&startblock=0&endblock=99999999&offset=10&sort=asc&apikey=U3Q36ZS9HXA8H1Y6FPS42TZ1A17SPAG11E';
